@@ -1,0 +1,58 @@
+/* === GLOBAL STYLING === */
+body {
+    background: #f5f6fa;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* === NAVBAR === */
+.navbar-brand {
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.nav-link {
+    margin-left: 10px;
+    transition: 0.2s;
+}
+
+.nav-link:hover {
+    color: #0dcaf0 !important;
+}
+
+/* === CONTAINER === */
+.container {
+    max-width: 1100px;
+}
+
+/* === CARD STYLE === */
+.card-custom {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+/* === TABLE IMPROVEMENT === */
+.table thead {
+    background: #343a40;
+    color: white;
+}
+
+.table tbody tr:hover {
+    background: #f0f0f0;
+}
+
+/* === BUTTON CUSTOM === */
+.btn-action {
+    padding: 5px 12px;
+    font-size: 14px;
+    border-radius: 6px;
+}
+
+/* === BADGE Tipe Kriteria === */
+.badge-cost {
+    background: #dc3545;
+}
+
+.badge-benefit {
+    background: #198754;
+}
