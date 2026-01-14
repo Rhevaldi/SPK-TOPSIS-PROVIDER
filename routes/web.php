@@ -18,8 +18,8 @@ Route::resource('operator', OperatorController::class);
 Route::resource('kriteria', KriteriaController::class);
 Route::resource('nilai', NilaiController::class);
 
-Route::resource('subkriteria', SubKriteriaController::class)
-    ->except(['show','edit','update']);
+Route::resource('subkriteria', SubKriteriaController::class);
+   
 
 Route::get('/topsis', [TopsisController::class, 'index'])
     ->name('topsis.index');
