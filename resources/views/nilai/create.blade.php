@@ -3,48 +3,78 @@
 @section('title', 'Input Nilai Operator')
 
 @section('content')
-<div class="container mt-4">
-    <h3 class="mb-3">Input Nilai Operator</h3>
+    <div class="container-fluid">
 
-    <form action="{{ route('nilai.store') }}" method="POST">
-        @csrf
+        <div class="row justify-content-center mt-3">
+            <div class="col-lg-10">
 
-        <div class="mb-3">
-            <label for="operator" class="form-label">Pilih Operator</label>
-            <select name="operator_id" id="operator" class="form-select" required>
-                <option value="">-- Pilih Operator --</option>
-                @foreach ($operators as $op)
-                    <option value="{{ $op->id }}">{{ $op->nama }}</option>
-                @endforeach
-            </select>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-clipboard-check"></i> Input Nilai Operator
+                        </h3>
+                    </div>
+
+                    <form action="{{ route('nilai.store') }}" method="POST">
+                        @csrf
+
+                        <div class="card-body">
+
+                            {{-- Pilih Operator --}}
+                            <div class="form-group">
+                                <label>Pilih Operator</label>
+                                <select name="operator_id" class="form-control" required>
+                                    <option value="">-- Pilih Operator --</option>
+                                    @foreach ($operators as $op)
+                                        <option value="{{ $op->id }}">{{ $op->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <hr>
+
+                            <h5 class="mb-3 text-muted">
+                                Nilai Berdasarkan Kriteria
+                            </h5>
+
+                            {{-- Nilai per Kriteria --}}
+                            @foreach ($kriteria as $krit)
+                                <div class="mb-3">
+                                    <label class="form-label">{{ $krit->nama }}</label>
+
+                                    @if ($krit->subKriteria->count())
+                                        <select name="nilai[{{ $krit->id }}]" class="form-select" required>
+                                            <option value="">-- Pilih Nilai --</option>
+                                            @foreach ($krit->subKriteria as $sub)
+                                                <option value="{{ $sub->nilai }}">
+                                                    {{ $sub->nama }} ({{ $sub->nilai }})
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    @else
+                                        <input type="number" name="nilai[{{ $krit->id }}]" class="form-control"
+                                            min="1" max="5" required>
+                                    @endif
+                                </div>
+                            @endforeach
+
+
+                        </div>
+
+                        <div class="card-footer text-right">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Simpan Nilai
+                            </button>
+                            <a href="{{ route('nilai.index') }}" class="btn btn-secondary ml-2">
+                                <i class="fas fa-arrow-left"></i> Kembali
+                            </a>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
         </div>
 
-        <hr>
-
-        <h5>Nilai Berdasarkan Kriteria</h5>
-
-        @foreach ($kriteria as $krit)
-            <div class="mb-3">
-                <label class="form-label">{{ $krit->nama }}</label>
-
-                @php
-                    $list = $options[$krit->nama] ?? null;
-                @endphp
-
-                @if ($list)
-                    <select name="nilai[{{ $krit->id }}]" class="form-select" required>
-                        <option value="">-- Pilih Nilai --</option>
-                        @foreach ($list as $label => $val)
-                            <option value="{{ $val }}">{{ $label }} ({{ $val }})</option>
-                        @endforeach
-                    </select>
-                @else
-                    <input type="number" name="nilai[{{ $krit->id }}]" class="form-control" min="1" max="5" placeholder="Masukkan nilai (1–5)" required>
-                @endif
-            </div>
-        @endforeach
-
-        <button type="submit" class="btn btn-primary mt-3">Simpan Nilai</button>
-    </form>
-</div>
+    </div>
 @endsection

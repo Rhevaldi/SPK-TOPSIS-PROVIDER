@@ -57,17 +57,34 @@ class TopsisController extends Controller
         }
 
         // 5) Solusi ideal A+ dan A- berdasarkan matriks V
-        $Apos = []; $Aneg = [];
-        foreach ($kriterias as $kId => $k) {
-            $col = array_column($V, $kId);
-            if ($k->tipe === 'benefit') {
-                $Apos[$kId] = max($col);
-                $Aneg[$kId] = min($col);
-            } else { // cost
-                $Apos[$kId] = min($col);
-                $Aneg[$kId] = max($col);
-            }
-        }
+// 5) Solusi ideal A+ dan A- berdasarkan matriks V
+$Apos = []; $Aneg = [];
+
+// PROTEKSI: Cek apakah data tersedia
+if ($operators->isEmpty() || empty($V)) {
+    return view('topsis.index', [
+        'hasil' => [],
+    ]);
+}
+
+foreach ($kriterias as $kId => $k) {
+    $col = array_column($V, $kId);
+    
+    // Pastikan kolom ini ada nilainya sebelum di min/max
+    if (empty($col)) {
+        $Apos[$kId] = 0;
+        $Aneg[$kId] = 0;
+        continue;
+    }
+
+    if ($k->tipe === 'benefit') {
+        $Apos[$kId] = max($col);
+        $Aneg[$kId] = min($col);
+    } else { // cost
+        $Apos[$kId] = min($col);
+        $Aneg[$kId] = max($col);
+    }
+}
 
         // 6) Hitung jarak D+ dan D- serta preferensi
         $results = [];

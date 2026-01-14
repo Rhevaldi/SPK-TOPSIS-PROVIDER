@@ -22,5 +22,11 @@ class Kriteria extends Model
     return $this->hasMany(Nilai::class);
 }
 
+public function subKriteria()
+{
+    return $this->hasMany(SubKriteria::class);
+}
+
+
     
 }

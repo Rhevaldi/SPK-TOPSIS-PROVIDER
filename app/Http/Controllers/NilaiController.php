@@ -17,41 +17,10 @@ class NilaiController extends Controller
 
     public function create()
     {
-        $operators = Operator::all();
-        $kriteria = Kriteria::all();
+    $operators = Operator::all();
+    $kriteria = Kriteria::with('subKriteria')->get();
 
-        // dropdown berdasarkan nama kriteria
-        $options = [
-            'Harga' => [
-                '5.000 – 20.000' => 5,
-                '21.000 – 40.000' => 4,
-                '41.000 – 60.000' => 3,
-                '61.000 – 80.000' => 2,
-                '> 100.000' => 1,
-            ],
-            'Jumlah Kuota' => [
-                '> 100 GB' => 5,
-                '99 – 60 GB' => 4,
-                '59 – 30 GB' => 3,
-                '39 – 10 GB' => 2,
-                '< 10 GB' => 1,
-            ],
-            'Kecepatan Internet' => [
-                '> 20 Mbps' => 5,
-                '20 – 18 Mbps' => 4,
-                '17 – 15 Mbps' => 3,
-                '< 15 Mbps' => 2,
-            ],
-            'Bonus' => [
-                'Akses aplikasi TikTok' => 5,
-                'Masa aktif panjang' => 4,
-                'Gaming sepuasnya' => 3,
-                'Telepon Gratis' => 2,
-                'Akses Google Maps' => 1,
-            ],
-        ];
-
-        return view('nilai.create', compact('operators', 'kriteria', 'options'));
+    return view('nilai.create', compact('operators', 'kriteria'));
     }
 
     public function store(Request $request)
@@ -71,45 +40,16 @@ class NilaiController extends Controller
         return redirect()->route('nilai.index')->with('success', 'Nilai berhasil disimpan!');
     }
 
-    public function edit($operator_id)
+public function edit($operator_id)
 {
     $operator = Operator::findOrFail($operator_id);
-    $kriteria = Kriteria::all();
-    $existingNilai = Nilai::where('operator_id', $operator_id)->pluck('nilai', 'kriteria_id');
+    $kriteria = Kriteria::with('subKriteria')->get();
+    $existingNilai = Nilai::where('operator_id', $operator_id)
+                        ->pluck('nilai', 'kriteria_id');
 
-    // dropdown sama kayak di create
-    $options = [
-        'Harga' => [
-            '5.000 – 20.000' => 5,
-            '21.000 – 40.000' => 4,
-            '41.000 – 60.000' => 3,
-            '61.000 – 80.000' => 2,
-            '> 100.000' => 1,
-        ],
-        'Jumlah Kuota' => [
-            '> 100 GB' => 5,
-            '99 – 60 GB' => 4,
-            '59 – 30 GB' => 3,
-            '39 – 10 GB' => 2,
-            '< 10 GB' => 1,
-        ],
-        'Kecepatan Internet' => [
-            '> 20 Mbps' => 5,
-            '20 – 18 Mbps' => 4,
-            '17 – 15 Mbps' => 3,
-            '< 15 Mbps' => 2,
-        ],
-        'Bonus' => [
-            'Akses aplikasi TikTok' => 5,
-            'Masa aktif panjang' => 4,
-            'Gaming sepuasnya' => 3,
-            'Telepon Gratis' => 2,
-            'Akses Google Maps' => 1,
-        ],
-    ];
-
-    return view('nilai.edit', compact('operator', 'kriteria', 'existingNilai', 'options'));
+    return view('nilai.edit', compact('operator', 'kriteria', 'existingNilai'));
 }
+
 
 public function destroy($operator_id)
 {
