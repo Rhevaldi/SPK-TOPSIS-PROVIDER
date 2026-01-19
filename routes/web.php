@@ -15,10 +15,12 @@ Route::get('/dashboard', function () {
 })->name('dashboard');
 
 Route::resource('operator', OperatorController::class);
-Route::resource('kriteria', KriteriaController::class);
+Route::resource('kriteria', KriteriaController::class)
+->parameters(['kriteria' => 'kriteria']);
 Route::resource('nilai', NilaiController::class);
 
-Route::resource('subkriteria', SubKriteriaController::class);
+Route::resource('subkriteria', SubKriteriaController::class)
+->parameters(['subkriteria' => 'subkriteria']);
    
 
 Route::get('/topsis', [TopsisController::class, 'index'])

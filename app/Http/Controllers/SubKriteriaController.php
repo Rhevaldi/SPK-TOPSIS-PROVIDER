@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SubKriteria;   
-use App\Models\Kriteria;     
+use App\Models\SubKriteria;
+use App\Models\Kriteria;
 use Illuminate\Http\Request;
 
 class SubKriteriaController extends Controller
@@ -11,30 +11,56 @@ class SubKriteriaController extends Controller
     public function index()
     {
         $data = SubKriteria::with('kriteria')->get();
-        return view('subkriteria.index', compact('data'));
+        $kriterias = Kriteria::all(); // untuk filter (opsional)
+        return view('subkriteria.index', compact('data','kriterias'));
     }
 
     public function create()
     {
-        $kriteria = Kriteria::all();
-        return view('subkriteria.create', compact('kriteria'));
+        $kriterias = Kriteria::all();
+        return view('subkriteria.create', compact('kriterias'));
     }
 
-    public function store(Request $r)
+    public function store(Request $request)
     {
-        SubKriteria::create($r->validate([
-            'kriteria_id' => 'required',
-            'nama'        => 'required',
-            'nilai'       => 'required|numeric'
-        ]));
+        $data = $request->validate([
+            'kriteria_id' => 'required|exists:kriteria,id',
+            'nama'        => 'required|string|max:100',
+            'nilai'       => 'required|numeric|min:1|max:5',
+        ]);
 
-        return redirect()->route('subkriteria.index')
-            ->with('success','Sub kriteria ditambahkan');
+        SubKriteria::create($data);
+
+        return redirect()
+            ->route('subkriteria.index')
+            ->with('success','Sub kriteria berhasil ditambahkan');
     }
 
-    public function destroy($id)
+    public function edit(SubKriteria $subkriteria)
     {
-        SubKriteria::findOrFail($id)->delete();
-        return back()->with('success','Sub kriteria dihapus');
+        $kriterias = Kriteria::all();
+        return view('subkriteria.edit', compact('subkriteria','kriterias'));
+    }
+
+    public function update(Request $request, SubKriteria $subkriteria)
+    {
+        $data = $request->validate([
+            'kriteria_id' => 'required|exists:kriterias,id',
+            'nama'        => 'required|string|max:100',
+            'nilai'       => 'required|numeric|min:1|max:5',
+        ]);
+
+        $subkriteria->update($data);
+
+        return redirect()
+            ->route('subkriteria.index')
+            ->with('success','Sub kriteria berhasil diperbarui');
+    }
+
+    public function destroy(SubKriteria $subkriteria)
+    {
+        $subkriteria->delete();
+
+        return back()->with('success','Sub kriteria berhasil dihapus');
     }
 }

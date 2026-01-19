@@ -22,7 +22,7 @@ class KriteriaController extends Controller
     {
         $request->validate([
             'nama' => 'required|string|max:100',
-            'bobot' => 'required|numeric',
+            'bobot' => 'required|numeric|min:1|max:5',
             'tipe' => 'required|in:benefit,cost',
         ]);
 
@@ -44,7 +44,7 @@ class KriteriaController extends Controller
     {
         $data = $request->validate([
             'nama' => 'required|string|max:100',
-            'bobot' => 'required|numeric|min:0|max:1',
+            'bobot' => 'required|numeric|min:1|max:5',
             'tipe' => 'required|in:benefit,cost',
         ]);
 
