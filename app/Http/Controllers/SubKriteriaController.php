@@ -24,7 +24,7 @@ class SubKriteriaController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'kriteria_id' => 'required|exists:kriteria,id',
+            'kriteria_id' => 'required|exists:kriterias,id',
             'nama'        => 'required|string|max:100',
             'nilai'       => 'required|numeric|min:1|max:5',
         ]);

@@ -76,13 +76,22 @@
                                     @endforeach
                                 </select>
                             @else
-                                <input type="number"
-                                       name="nilai[{{ $krit->id }}]"
-                                       class="form-control"
-                                       min="1"
-                                       max="5"
-                                       placeholder="Masukkan nilai 1–5"
-                                       required>
+
+                            {{-- dropdown masukan nilai --}}
+                                {{-- <select name="nilai[{{ $krit->id }}]" class="form-control" required>
+                                    <option value="">-- Pilih Nilai --</option>
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <option value="{{ $i }}">{{ $i }}</option>
+                                    @endfor
+                                </select> --}}
+
+
+                                <small class="form-text text-muted">
+                                    <em>
+                                        <i class="fas fa-info-circle mr-1"></i>
+                                        Kriteria ini tidak memiliki sub kriteria. Silakan input sub kriteria terlebih dahulu.
+                                    </em>
+                                </small>
                             @endif
                         </div>
                     @endforeach
