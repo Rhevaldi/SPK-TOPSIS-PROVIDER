@@ -34,7 +34,7 @@
                                     @endif
                                 </td>
                                 <td>{{ $row['operator'] }}</td>
-                                <td>{{ number_format($row['nilai'], 4) }}</td>
+                                <td>{{ number_format($row['nilai'], 1) }}</td>
                             </tr>
                         @empty
                             <tr>
