@@ -100,7 +100,7 @@ foreach ($kriterias as $kId => $k) {
             $dMinus = sqrt($dMinus);
 
             $pref = ($dPlus + $dMinus == 0.0) ? 0.0 : ($dMinus / ($dPlus + $dMinus));
-
+$pref_truncate = floor($pref * 10000) / 10000;
             // simpan raw dan rounded (9 decimal) - Excel contohmu pakai 9 desimal
             $results[] = [
                 'operator_id' => $op->id,
@@ -110,7 +110,7 @@ foreach ($kriterias as $kId => $k) {
                 // raw preferensi (high precision)
                 'pref_raw' => $pref,
                 // tampilkan seperti Excel (9 desimal)
-                'nilai' => round($pref, 9),
+                'nilai' => $pref_truncate,
             ];
         }
 
